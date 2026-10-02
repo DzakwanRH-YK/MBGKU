@@ -1,1 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#141b3c" />
+<title>MBG-ku</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app noauth" data-brand="mbgku">
+  <div class="status-strip"></div>
 
+  <!-- ============ LANDING ============ -->
+  <section id="screen-landing" class="screen active landing">
+    <img src="assets/logo.png" alt="MBG-ku" class="logo" />
+    <p class="tagline">Info MBG sekolah, dalam satu tempat.</p>
+    <button class="btn-primary" id="btn-masuk">Masuk</button>
+  </section>
+
+  <!-- ============ LOGIN ============ -->
+  <section id="screen-login" class="screen landing">
+    <img src="assets/logo.png" alt="MBG-ku" class="logo small" />
+    <h2 class="section-title">Pilih akses</h2>
+    <div class="role-cards">
+      <button class="role-card" data-role="operator">🛠️<span>Operator</span></button>
+      <button class="role-card" data-role="guru">🧑‍🏫<span>Guru</span></button>
+      <button class="role-card" data-role="siswa">🎓<span>Siswa</span></button>
+    </div>
+    <div class="login-form modal-body">
+      <div id="f-staff">
+        <label>Nama pengguna</label><input id="l-user" autocomplete="off" />
+        <label>Kata sandi</label><input id="l-pass" type="password" />
+      </div>
+      <div id="f-siswa" class="hidden">
+        <label>Pilih kelas</label><select id="l-kelas"></select>
+        <label>Kode kelas</label><input id="l-kode" autocomplete="off" />
+      </div>
+      <p id="l-err" class="form-err"></p>
+      <button class="btn-primary" id="btn-login">Masuk</button>
+    </div>
+  </section>
+
+
+  <!-- ============ BERANDA ============ -->
+  <section id="screen-beranda" class="screen active">
+    <header class="hero">
+      <div class="hero-top">
+        <div>
+          <h1 id="guru-h1">MBG-ku</h1>
+          <p class="subtitle">Halo!</p>
+        </div>
+        <button class="bell-btn" data-nav="notifikasi">
+          🔔
+          <span class="badge" id="bell-badge">3</span>
+        </button>
+      </div>
+
+      <div class="hero-date-row">
+       <div class="date-chip">🗓️
+       <span id="tanggal"></span>
+       </div>
+       <div class="status-pill">
+       <span class="dot"></span> MBG hari ini aktif
+  </div>
+</div>
+
+      <div class="stat-grid">
+        <div class="stat-card"><strong id="stat-total">15</strong><span>Kelas aktif</span></div>
+        <div class="stat-card"><strong id="stat-selesai" class="c-green">4</strong><span>Sudah ambil</span></div>
+        <div class="stat-card"><strong id="stat-menunggu" class="c-orange">5</strong><span>Menunggu kedatangan</span></div>
+        <div class="stat-card"><strong id="stat-belum" class="c-red">6</strong><span>Menunggu</span></div>
+      </div>
+    </header>
+
+    <div class="content">
+      <h2 class="section-title">Status kelas hari ini</h2>
+
+      <div class="tabs">
+        <button class="tab active" data-filter="semua">Semua</button>
+        <button class="tab" data-filter="SMK1">SMK 1</button>
+        <button class="tab" data-filter="SMK2">SMK 2</button>
+        <button class="tab" data-filter="SMP">SMP</button>
+      </div>
+
+      <div class="banner">
+        <div class="banner-icon">📦</div>
+        <div class="banner-text">
+          <strong>MBG tersedia — kirim ke gedung</strong>
+          <span>Pilih SMK 1, SMK 2, atau SMP</span>
+        </div>
+        <div class="banner-action">
+          <button id="kirim-btn" class="btn-kirim">Kirim ▾</button>
+          <div id="kirim-menu" class="dropdown-menu hidden">
+            <button data-sekolah="SMK1">SMK 1</button>
+            <button data-sekolah="SMK2">SMK 2</button>
+            <button data-sekolah="SMP">SMP</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="kelas-groups"></div>
+    </div>
+  </section>
+
+  <!-- ============ LAPORAN ============ -->
+  <section id="screen-laporan" class="screen">
+    <div class="page-header">
+      <div>
+        <h1>Laporan</h1>
+        <p class="subtitle">Rekap dan riwayat status hari ini</p>
+      </div>
+      <button class="chip-select">Hari ini ▾</button>
+    </div>
+
+    <div class="content">
+      <div class="report-card">
+        <div class="report-row">
+          <div><strong id="rep-total">0</strong><span>Total siswa terdaftar</span></div>
+          <div><strong id="rep-sudah" class="c-green">0</strong><span>Sudah mengambil</span></div>
+        </div>
+        <div class="divider"></div>
+        <div class="report-row">
+          <div><strong id="rep-menunggu" class="c-orange">0</strong><span>Menunggu MBG</span></div>
+          <div><strong id="rep-belum" class="c-red">0</strong><span>Belum melapor</span></div>
+        </div>
+      </div>
+
+      <h2 class="section-title">Riwayat status</h2>
+      <div id="riwayat-list" class="riwayat-list"></div>
+    </div>
+  </section>
+
+  <!-- ============ NOTIFIKASI ============ -->
+  <section id="screen-notifikasi" class="screen">
+    <div class="page-header">
+      <div>
+        <h1>Notifikasi</h1>
+        <p class="subtitle">Aktivitas pengambilan MBG</p>
+      </div>
+      <button id="tandai-dibaca" class="link-btn">Tandai dibaca</button>
+    </div>
+
+    <div class="content">
+      <p class="group-label">HARI INI</p>
+      <div id="notif-today" class="notif-list"></div>
+
+      <p class="group-label">KEMARIN</p>
+      <div id="notif-yesterday" class="notif-list"></div>
+    </div>
+  </section>
+
+  <!-- ============ AKUN ============ -->
+  <section id="screen-akun" class="screen">
+    <div class="page-header">
+      <div>
+        <h1>Akun</h1>
+        <p class="subtitle">Informasi akun dan pengaturan</p>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="profile-card">
+        <div class="avatar" id="pf-av"></div>
+        <div>
+          <strong id="pf-nama"></strong>
+          <span class="role" id="pf-role"></span>
+          <span class="sekolah" id="pf-sek"></span>
+        </div>
+      </div>
+
+      <h2 class="section-title">Pengaturan</h2>
+      <div class="menu-list">
+        <button class="menu-item" data-info="Notifikasi aktif untuk semua aktivitas MBG di kelas kamu.">🔔 &nbsp;Kelola notifikasi</button>
+        <button class="menu-item" data-info="">🔒 &nbsp;Ubah kata sandi</button>
+        <button class="menu-item" data-info="Hubungi admin sekolah untuk bantuan lebih lanjut.">ℹ️ &nbsp;Bantuan &amp; dukungan</button>
+        <button class="menu-item" data-info="MBG-ku v1.0 — Info MBG sekolah, dalam satu tempat.">📄 &nbsp;Tentang aplikasi</button>
+      </div>
+
+      <button id="logout-btn" class="btn-logout">Keluar</button>
+    </div>
+  </section>
+
+
+  <section id="screen-sberanda" class="screen dyn"></section>
+  <section id="screen-sriwayat" class="screen dyn"></section>
+  <section id="screen-okelas" class="screen dyn"></section>
+  <section id="screen-opengguna" class="screen dyn"></section>
+  <section id="screen-okonten" class="screen dyn"></section>
+  <section id="screen-olog" class="screen dyn"></section>
+
+  <!-- ============ BOTTOM NAV ============ -->
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+
+<!-- ============ MODAL: UPDATE STATUS KELAS ============ -->
+<div id="modal-overlay" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-title"></h3>
+      <button id="modal-close">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+
+<script src="script.js"></script>
+</body>
+        </html>
